@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wexa — Fraud Ring Explorer</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="db-banner" class="banner hidden" role="alert"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>Fraud Ring Explorer</h1>
+      <span class="sub">CognoDB · openCypher · Bolt</span>
+    </div>
+    <div class="search">
+      <input id="search-input" type="search" placeholder="Search account number or owner name…" autocomplete="off" />
+      <div id="search-results" class="search-results hidden"></div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="rail" aria-label="Flagged accounts and detected rings">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Flagged accounts</h2>
+          <button id="refresh-flagged" class="ghost" title="Refresh">↻</button>
+        </div>
+        <div id="flagged-list" class="list" data-state="loading">
+          <div class="skeleton-row"></div><div class="skeleton-row"></div><div class="skeleton-row"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Top connectors</h2>
+          <span class="hint" title="People whose network touches the most flagged accounts">ⓘ</span>
+        </div>
+        <div id="connectors-list" class="list" data-state="loading">
+          <div class="skeleton-row"></div><div class="skeleton-row"></div><div class="skeleton-row"></div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="canvas-wrap" aria-label="Network graph">
+      <div class="canvas-toolbar">
+        <div class="pill" id="breadcrumb">Select a flagged account to explore</div>
+        <div class="spacer"></div>
+        <label class="hops">
+          Hops
+          <select id="hops-select">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+          </select>
+        </label>
+      </div>
+      <canvas id="graph"></canvas>
+      <div id="empty-state" class="empty-state">
+        <div class="empty-icon">◍</div>
+        <h3>Nothing to show yet</h3>
+        <p>Pick a flagged account on the left, or search for one above.</p>
+      </div>
+    </section>
+
+    <aside class="inspector" aria-label="Selected node details">
+      <section class="panel">
+        <div class="panel-head"><h2>Details</h2></div>
+        <div id="inspector-body" class="inspector-body">
+          <p class="muted">Click a node in the graph to inspect it.</p>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Query</h2>
+          <button id="copy-query" class="ghost" title="Copy Cypher">⧉</button>
+        </div>
+        <pre id="query-view" class="query-view">—</pre>
+      </section>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <script src="./graph.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
